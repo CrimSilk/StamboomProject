@@ -1,5 +1,6 @@
 package stamboom.console;
 
+import java.io.File;
 import stamboom.domain.*;
 import java.util.*;
 import stamboom.util.StringUtilities;
@@ -61,12 +62,28 @@ public class StamboomConsole {
     
     void loadData()
     {
-        
+        try
+        {
+            File file = new File("file");
+            controller.deserialize(file); 
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.toString());
+        }
     }
     
     void saveData()
     {
-        
+         try
+        {
+            File file = new File("file");
+            controller.serialize(file); 
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.toString());
+        }
     }
     
     void showStamboom()

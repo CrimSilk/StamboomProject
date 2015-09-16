@@ -80,7 +80,6 @@ public class SerializationMediator implements IStorageMediator {
             i.printStackTrace();
             return;
         }
-        // todo opgave 2 X
   
     }
 
