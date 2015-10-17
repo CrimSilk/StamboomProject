@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Stamboom Applicatie.jnlp">
+  <information>
+    <title>Stamboom Applicatie</title>
+    <vendor>frankpeeters</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="StamboomProject.jar" size="42601" download="eager" />
+    <jar href="lib\junit-4.10.jar" size="281020" download="eager" />
+    <jar href="lib\mysql-connector-java-5.1.23-bin.jar" size="860478" download="eager" />
+    <jar href="lib\ojdbc6.jar" size="2843017" download="eager" />
+  </resources>
+<security>
+  <all-permissions/>
+</security>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Stamboom Applicatie" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="stamboom.gui.StamboomGUI"  name="Stamboom Applicatie" />
+  <update check="always"/>
+</jnlp>

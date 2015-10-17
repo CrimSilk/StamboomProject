@@ -1,0 +1,28 @@
+DROP TABLE Persoon;
+DROP TABLE Gezin;
+
+CREATE TABLE Persoon 
+(
+  nr NUMBER(8) NOT NULL,
+  voornamen VARCHAR2(255) NOT NULL,
+  tussenvoegsel VARCHAR2(255),
+  achternaam VARCHAR2(255) NOT NULL,
+  geboorteDatum DATE NOT NULL,
+  geboortePlaats VARCHAR2(255) NOT NULL,
+  ouderlijkGezin NUMBER(8),
+  geslacht VARCHAR2(255) NOT NULL,
+  
+  CONSTRAINT PK_PersoonNr PRIMARY KEY (nr)
+);
+
+CREATE TABLE Gezin
+(
+  nr NUMBER(8) NOT NULL,
+  ouder1 NUMBER(8) NOT NULL,
+  ouder2 NUMBER(8),
+  
+  huwelijksDatum DATE,
+  scheidingsDatum DATE,
+  
+  CONSTRAINT PK_GezinNr PRIMARY KEY (nr)
+);
