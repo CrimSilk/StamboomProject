@@ -308,7 +308,7 @@
                                 <MenuItem fx:id="miOpen" mnemonicParsing="false" onAction="#openStamboom" text="Open" />
                                 <MenuItem fx:id="miSave" mnemonicParsing="false" onAction="#saveStamboom" text="Save" />
                                 <SeparatorMenuItem mnemonicParsing="false" />
-                                <CheckMenuItem fx:id="cmDatabase" disable="true" mnemonicParsing="false" onAction="#configureStorage" text="Database" />
+                                <CheckMenuItem fx:id="cmDatabase" mnemonicParsing="false" onAction="#configureStorage" text="Database" />
                                 <SeparatorMenuItem mnemonicParsing="false" />
                                 <MenuItem fx:id="miClose" mnemonicParsing="false" onAction="#closeApplication" text="Close" />
                             </items>

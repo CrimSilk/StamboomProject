@@ -66,7 +66,7 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML TextField tfScheidingInvoer;
     @FXML Button btOKGezinInvoer;
     @FXML Button btCancelGezinInvoer;
-    
+
     //INVOER PERSOON
     @FXML TextField tfInvoerVoornamen;
     @FXML TextField tfInvoerTussenvoegsel;
@@ -77,7 +77,7 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML TextField tfInvoerGeboorteDatum;
     @FXML Button btOKPersoonInvoer;
     @FXML Button btCancelPersoonInvoer;
-    
+
     //GEZIN
     @FXML TextField tfGezinNummer;
     @FXML TextField tfOuder1;
@@ -86,18 +86,17 @@ public class StamboomFXController extends StamboomController implements Initiali
     @FXML Button btGetrouwdOpOpslaan;
     @FXML TextField tfGescheidenOp;
     @FXML Button btGescheidenOpOpslaan;
-    @FXML ListView lvKinderen; 
+    @FXML ListView lvKinderen;
     @FXML ComboBox cbGezin;
-    
+
     private boolean withDatabase;
 
     private IStorageMediator storageMediator;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComboboxes();
-        withDatabase = true;
-        
+        withDatabase = false;
         storageMediator = new SerializationMediator();
     }
 
@@ -150,42 +149,42 @@ public class StamboomFXController extends StamboomController implements Initiali
 
         int nr = Integer.parseInt(tfPersoonNr.getText());
         Persoon p = getAdministratie().getPersoon(nr);
-        if(getAdministratie().setOuders(p, ouderlijkGezin)){
+        if (getAdministratie().setOuders(p, ouderlijkGezin)) {
             showDialog("Success", ouderlijkGezin.toString()
-                + " is nu het ouderlijk gezin van " + p.getNaam());
+                    + " is nu het ouderlijk gezin van " + p.getNaam());
         }
-        
+
     }
 
     public void selectGezin(Event evt) {
-        Gezin gezin = (Gezin)cbGezin.getSelectionModel().getSelectedItem();
-        if(gezin != null) {
+        Gezin gezin = (Gezin) cbGezin.getSelectionModel().getSelectedItem();
+        if (gezin != null) {
             showGezin(gezin);
         }
     }
 
     private void showGezin(Gezin gezin) {
         clearTabGezin();
-        if(gezin != null) {
-            
+        if (gezin != null) {
+
             tfGezinNummer.setText(String.valueOf(gezin.getNr()));
-            if(gezin.getOuder1() != null) {
+            if (gezin.getOuder1() != null) {
                 tfOuder1.setText(gezin.getOuder1().getNaam());
             }
-            if(gezin.getOuder2() != null) {
+            if (gezin.getOuder2() != null) {
                 tfOuder2.setText(gezin.getOuder2().getNaam());
             }
-            
+
             Calendar huwelijksDatum = gezin.getHuwelijksdatum();
             Calendar scheidingsDatum = gezin.getScheidingsdatum();
-            
-            if(huwelijksDatum != null) {
+
+            if (huwelijksDatum != null) {
                 tfGetrouwdOp.setText(StringUtilities.datumString(huwelijksDatum));
             }
-            if(scheidingsDatum != null) {
+            if (scheidingsDatum != null) {
                 tfGescheidenOp.setText(StringUtilities.datumString(scheidingsDatum));
             }
-            
+
             lvKinderen.setItems(FXCollections.observableArrayList(gezin.getKinderen()));
         }
     }
@@ -196,22 +195,19 @@ public class StamboomFXController extends StamboomController implements Initiali
         try {
             gezin = getAdministratie().getGezin(Integer.parseInt(tfGezinNummer.getText()));
             cal = StringUtilities.datum(tfGetrouwdOp.getText());
-        }
-        catch (IllegalArgumentException IAE) {
+        } catch (IllegalArgumentException IAE) {
             showDialog("Incorrecte Invoer", "Ongeldige datum, controleer de datum");
             return;
         }
-        
-        if(gezin != null && cal != null) {
-            if(getAdministratie().setHuwelijk(gezin, cal)) {
+
+        if (gezin != null && cal != null) {
+            if (getAdministratie().setHuwelijk(gezin, cal)) {
                 showGezin(gezin);
                 showDialog("Nieuwe datum toegevoed", "Nieuwe datum succesvol toegevoegd");
-            }
-            else {
+            } else {
                 showDialog("Er is iets fout gegaan", "De nieuwe datum is niet toegevoegd");
             }
-        }
-        else {
+        } else {
             showDialog("Er is iets fout gegaan", "Gezin of datum was fout");
         }
     }
@@ -219,26 +215,23 @@ public class StamboomFXController extends StamboomController implements Initiali
     public void setScheidingsdatum(Event evt) {
         Calendar cal;
         Gezin gezin;
-        
+
         try {
             gezin = getAdministratie().getGezin(Integer.parseInt(tfGezinNummer.getText()));
             cal = StringUtilities.datum(tfGescheidenOp.getText());
-        }
-        catch (IllegalArgumentException IAE) {
+        } catch (IllegalArgumentException IAE) {
             showDialog("Incorrecte Invoer", "Ongeldige datum, controleer de datum");
             return;
         }
-        
-        if(gezin != null && cal != null) {
-            if(getAdministratie().setScheiding(gezin, cal)) {
+
+        if (gezin != null && cal != null) {
+            if (getAdministratie().setScheiding(gezin, cal)) {
                 showGezin(gezin);
                 showDialog("Nieuwe datum toegevoed", "Nieuwe datum succesvol toegevoegd");
-            }
-            else {
+            } else {
                 showDialog("Er is iets fout gegaan", "De nieuwe datum is niet toegevoegd");
             }
-        }
-        else {
+        } else {
             showDialog("Er is iets fout gegaan", "Gezin of datum was fout");
         }
     }
@@ -252,32 +245,30 @@ public class StamboomFXController extends StamboomController implements Initiali
         String tussenvoegsel = tfInvoerTussenvoegsel.getText();
         String achternaam = tfInvoerAchternaam.getText();
         String geboortePlaats = tfInvoerGeboortePlaats.getText();
-        Geslacht geslacht = (Geslacht)cbInvoerGeslacht.getSelectionModel().getSelectedItem();
-        Gezin gezin = (Gezin)cbInvoerOuderlijkGezin.getSelectionModel().getSelectedItem();
+        Geslacht geslacht = (Geslacht) cbInvoerGeslacht.getSelectionModel().getSelectedItem();
+        Gezin gezin = (Gezin) cbInvoerOuderlijkGezin.getSelectionModel().getSelectedItem();
         Calendar geboorteDatum = null;
-        
+
         try {
             geboorteDatum = StringUtilities.datum(tfInvoerGeboorteDatum.getText());
-        }
-        catch (IllegalArgumentException IAE) {
+        } catch (IllegalArgumentException IAE) {
             showDialog("Ongeldige datum", "Datum incorrect");
         }
-        
-        if(voornamen.isEmpty() || achternaam.isEmpty() || geboortePlaats.isEmpty() || geboorteDatum == null) {
+
+        if (voornamen.isEmpty() || achternaam.isEmpty() || geboortePlaats.isEmpty() || geboorteDatum == null) {
             showDialog("Ongeldige gegevens", "Een van de velden is niet (goed) ingevuld");
         }
-         
+
         String[] vnamen = voornamen.split("\\s+");
-        
+
         Persoon persoon = getAdministratie().addPersoon(geslacht, vnamen, achternaam, tussenvoegsel, geboorteDatum, geboortePlaats, gezin);
-        
-        if(persoon != null) {
+
+        if (persoon != null) {
             showDialog("Succes", "De persoon is toegevoegd");
-        }
-        else {
+        } else {
             showDialog("Fout", "Er is iets fout gegaan");
         }
-        
+
         clearTabPersoonInvoer();
         initComboboxes();
     }
@@ -305,7 +296,7 @@ public class StamboomFXController extends StamboomController implements Initiali
                 Calendar scheidingsdatum;
                 try {
                     scheidingsdatum = StringUtilities.datum(tfScheidingInvoer.getText());
-                    if(scheidingsdatum != null){
+                    if (scheidingsdatum != null) {
                         getAdministratie().setScheiding(g, scheidingsdatum);
                     }
                 } catch (IllegalArgumentException exc) {
@@ -327,13 +318,12 @@ public class StamboomFXController extends StamboomController implements Initiali
         clearTabGezinInvoer();
     }
 
-    
     public void showStamboom(Event evt) {
-        if(!tfPersoonNr.getText().isEmpty()) {
+        if (!tfPersoonNr.getText().isEmpty()) {
             Persoon persoon = getAdministratie().getPersoon(Integer.parseInt(tfPersoonNr.getText()));
-            
+
             TreeItem<String> tree = CreateTree(persoon, null);
-            
+
             TreeView treeView = new TreeView(tree);
 
             Scene scene = new Scene(treeView, 500, 500);
@@ -343,40 +333,38 @@ public class StamboomFXController extends StamboomController implements Initiali
 
             stage.show();
         }
-        
+
     }
-    
+
     public TreeItem<String> CreateTree(Persoon persoon, TreeItem parentBranch) {
         TreeItem<String> branch = new TreeItem<>(persoon.getNaam());
-        
-        if(parentBranch != null) {
+
+        if (parentBranch != null) {
             parentBranch.getChildren().add(branch);
         }
-        
-        if(persoon.getOuderlijkGezin() == null)
-        {
+
+        if (persoon.getOuderlijkGezin() == null) {
             return branch;
         }
-        
+
         Persoon ouder1 = persoon.getOuderlijkGezin().getOuder1();
         Persoon ouder2 = persoon.getOuderlijkGezin().getOuder2();
-        
-        if(ouder1 != null) {
+
+        if (ouder1 != null) {
             CreateTree(ouder1, branch);
         }
-        
-        if(ouder2 != null) {
+
+        if (ouder2 != null) {
             CreateTree(ouder2, branch);
         }
-        
+
         return branch;
     }
-    
-    
+
     public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
         TreeItem<String> branch = new TreeItem<String>();
         parent.getChildren().add(branch);
-        
+
         return branch;
     }
 
@@ -386,29 +374,36 @@ public class StamboomFXController extends StamboomController implements Initiali
         initComboboxes();
     }
 
-    
     public void openStamboom(Event evt) throws IOException {
-        this.loadFromDatabase();
+        if (withDatabase) {
+            this.loadFromDatabase();
+        } else {
+            storageMediator.load();
+        }
         showDialog("MELDING:", "Stamboom ingeladen!");
         getAdministratie().setObservableLists();
         initComboboxes();
     }
-    
+
     public void saveStamboom(Event evt) throws IOException {
-        
-        this.saveToDatabase();
+        if (withDatabase) {
+            this.saveToDatabase();
+        } else {
+            storageMediator.save(getAdministratie());
+        }
+
         showDialog("MELDING:", "Stamboom opgeslagen!");
     }
-    
+
     public void closeApplication(Event evt) throws IOException {
         saveStamboom(evt);
         getStage().close();
     }
-   
+
     public void configureStorage(Event evt) {
         withDatabase = cmDatabase.isSelected();
     }
- 
+
     public void selectTab(Event evt) {
         Object source = evt.getSource();
         if (source == tabPersoon) {
@@ -429,7 +424,6 @@ public class StamboomFXController extends StamboomController implements Initiali
         clearTabGezinInvoer();
     }
 
-    
     private void clearTabPersoonInvoer() {
         tfInvoerVoornamen.clear();
         tfInvoerTussenvoegsel.clear();
@@ -439,7 +433,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         tfInvoerGeboortePlaats.clear();
         cbInvoerOuderlijkGezin.getSelectionModel().clearSelection();
     }
-    
+
     private void clearTabGezinInvoer() {
         cbOuder1Invoer.getSelectionModel().clearSelection();
         cbOuder2Invoer.getSelectionModel().clearSelection();
@@ -459,7 +453,7 @@ public class StamboomFXController extends StamboomController implements Initiali
         cbOuderlijkGezin.getSelectionModel().clearSelection();
         lvAlsOuderBetrokkenBij.setItems(FXCollections.emptyObservableList());
     }
-    
+
     private void clearTabGezin() {
         tfGezinNummer.clear();
         tfOuder1.clear();

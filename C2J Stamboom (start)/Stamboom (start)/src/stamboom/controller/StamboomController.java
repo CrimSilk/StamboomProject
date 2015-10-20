@@ -13,7 +13,6 @@ import stamboom.storage.SerializationMediator;
 //TGV:
 import java.util.Properties;
 import stamboom.storage.DatabaseMediator;
-import stamboom.storage.DatabaseMediator;
 
 public class StamboomController {
 
